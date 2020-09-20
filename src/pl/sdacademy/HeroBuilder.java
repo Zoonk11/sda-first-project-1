@@ -2,36 +2,49 @@ package pl.sdacademy;
 
 import java.io.IOException;
 import java.util.Scanner;
-
+//klasa hb to klocek który tylko ma stworzyć nam bohatera mamy tylko 1 heroesa utworzyć  -tylko wczytać inputy od gracza i zbudować obiekt hereosa
 import static pl.sdacademy.ConsoleUtils.*;
-
+/**
+ * singleton class because only one hero builder can exist
+ */
 public class HeroBuilder {
 
-    public static int skillPoints = 100;
+
+    private static HeroBuilder Instance;//singleton zapewnić, żeby tylko 1 krasnala uworzyć musi byc static booo?
+
+
+    private HeroBuilder(){
+      }
+    public static HeroBuilder getInstance() {
+        if (Instance == null) {
+            Instance = new HeroBuilder();
+        } return Instance;
+    }
+    private static int skillPoints = 100;
 
     // delete me - ideally - use stub to pass as a parameter - in future reading player builds configs from files etc...
-    public Hero buildHeroForTesting() {
-        skillPoints = 0;
-        // name, sex, strength, stamina, dexterity, intelligence, wisdom, charisma
-        return new Hero("HERCULES", Sex.MALE, 95, 1, 1, 1, 1, 1);
-    }
+//    public Hero buildHeroForTesting() {
+//        skillPoints = 0;
+//        // name, sex, strength, stamina, dexterity, intelligence, wisdom, charisma
+//        return new Hero("HERCULES", Sex.MALE, 95, 1, 1, 1, 1, 1);
+//    }
 
     public Hero buildHero() {
         System.out.println("skill points left: " + skillPoints);
 
         String name = promptForString("Enter character name> ");
         String sexInput = promptForString("Enter character sex [M]ale, [F]emale, [O]ther> ");
-        String sexSafeInput = sexInput.toLowerCase();
+        String lowerCasesex = sexInput.toLowerCase();
 
-        Sex sex = null;
-
-        switch (sexSafeInput) {
+        Sex sex = null;//mozna to usunac bo i tak ma
+//USTAWIA ZMIENNĄ SEKS NA MALE FAMEL OTHER ZACZYTUJAC OD USERA
+        switch (lowerCasesex) {
             case "m":
             case "ma":
             case "mal":
             case "male":
-                printDebug("male");
-                sex = Sex.MALE;
+                printDebug("SELECTED MALE");
+                sex = Sex.MALE;// MOŻNA ZROBIC STATIC IMPORT
                 break;
             case "f":
             case "fe":
@@ -39,8 +52,8 @@ public class HeroBuilder {
             case "fema":
             case "femal":
             case "female":
-                printDebug("female!");
-                sex = Sex.valueOf("FEMALE");
+                printDebug("SELECTED FEMALE");
+                sex = Sex.valueOf("FEMALE");//SEX Z ENUMA - MUSI BYC DOKLADNIE TAK JAK W ENUMIE JAK PRZEZ VALUE OF
                 break;
             case "o":
             case "ot":
@@ -48,8 +61,8 @@ public class HeroBuilder {
             case "othe":
             case "other":
             default:
-                printDebug("other");
-                sex = Sex.OTHER;
+                printDebug("SELECTED OTHER");
+                sex = Sex.OTHER;//ALE LEPIEJ TAK
                 break;
         }
 
@@ -73,7 +86,7 @@ public class HeroBuilder {
                     "[6] charisma:     " + charisma +     "\n\n" +
                     "[anything else] exit"
             );
-            int choice = promptForInt("> ");
+            int choice = promptForInt("Please input a number > ");
             switch (choice) {
                 case 1: strength = readSkillValueFor("strength", strength); break;
                 case 2: stamina = readSkillValueFor("stamina", stamina); break;
@@ -82,14 +95,20 @@ public class HeroBuilder {
                 case 5: wisdom = readSkillValueFor("wisdom", wisdom); break;
                 case 6: charisma = readSkillValueFor("charisma", charisma); break;
                 default:
-                    boolean allStatFieldsSet = strength > 0 && stamina > 0 && dexterity > 0 && intelligence > 0 && wisdom > 0 && charisma > 0;
+                    boolean allStatFieldsSet =
+                                    strength > 0 &&
+                                    stamina  > 0 &&
+                                    dexterity      > 0 &&
+                                    intelligence   > 0 &&
+                                    wisdom         > 0 &&
+                                    charisma       > 0;
                     if(skillPoints == 0 && allStatFieldsSet) {
                         exit = true;
                     } else {
-                        promptForString("You have some points to set - remember that stats cannot be 0");
+                        promptForString("You have some points to set - remember that stats cannot be 0\n PRESS ENTER TO CONTINUE!");
                     }
             }
-        } while (!exit);
+        } while (!exit);//WHILE NIE EXIT - ZEBY EXIT ZMIENIŁ SIĘ NA TRUE RÓB PĘTLE DOPÓKI NIE CHCESZ WYJŚĆ
 
         return new Hero(name, sex, strength, stamina, dexterity, intelligence, wisdom, charisma);
     }

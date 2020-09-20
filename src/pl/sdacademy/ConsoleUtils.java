@@ -1,10 +1,11 @@
 package pl.sdacademy;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class ConsoleUtils {
-    public static boolean debugMode = false;
-
+    public static boolean debugMode = false;//łatwo włączać lub wyłączać w debug mode lub nie
+//kolorki ze stackoverflow
 
     public static final String C_RESET = "\u001B[0m";
 
@@ -48,6 +49,9 @@ public class ConsoleUtils {
 
     public static final String c_purple(String message) {
         return C_PURPLE + message + C_RESET;
+    }
+    public static final String c_red(String message) {
+        return C_RED + message + C_RESET;
     }
     public static String promptForString(String prompt) {
         Scanner myObj = new Scanner(System.in);

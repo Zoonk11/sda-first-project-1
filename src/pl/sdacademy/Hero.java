@@ -2,11 +2,15 @@ package pl.sdacademy;
 
 import java.util.Date;
 
+import static pl.sdacademy.ConsoleUtils.*;
+import static pl.sdacademy.Sex.FEMALE;
+import static pl.sdacademy.Sex.MALE;
+
 public class Hero {
 
     //statistics given by player
     private String name = "unnamed_hero";
-    private Sex sex = Sex.MALE;
+    private Sex sex = MALE;
 
     // phisical stats
     private int strength;
@@ -31,10 +35,10 @@ public class Hero {
     private Buff buffs = null;
 
     public Hero(String name, Sex sex, int strength, int stamina, int dexterity, int intelligence, int wisdom, int charisma) {
-        enemy = new Enemy("HERO_ENEMY");
-        int maleBonus = sex == Sex.MALE ? 10 : 0;
-        int femaleBonus = sex == Sex.FEMALE ? 10 : 0;
-        int otherBonus = sex == Sex.OTHER ? 10 : 0;
+       // enemy = new Enemy("HERO_ENEMY"); wykomentowane odkomentowac
+        int maleBonus = sex == MALE ? 10 : 0;//skrtowy if
+        int femaleBonus = sex == FEMALE ? 10 : 0;//skrtwy if
+        int otherBonus = sex == Sex.OTHER ? 10 : 0;//skrotwy if
 
         this.name = name;
         this.sex = sex;
@@ -78,13 +82,14 @@ public class Hero {
     }
 
     public void applyDamage(byte amount) {
-        System.out.println("Dealing " + amount + " damage to " + name);
-        health -= amount;
+        System.out.println("Dealing " + c_red(String.valueOf(amount))+ " damage to " + name);//używamy oklejną metodę która sprawia ze nam to pokoloruje
+        health -= amount;//health - amount = amount
 
         if(health < 0) {
             health = 0;
-
-            System.out.println("Enemy: " + name + " is dead!");
+            printDebug("gracz zginal - koniec gry");//jeszcze nie wiemy jak zakonczyc
+            System.out.println("Hero: " + name + " is dead!");
+            System.exit(0);
         }
     }
 
